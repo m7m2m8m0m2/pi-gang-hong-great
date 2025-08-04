@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🔍 π 百萬位數搜尋</h1>
-  <p>輸入任意數字（例如你的生日、手機號碼）來查 π 的小數點後 100 萬位中是否出現：</p>
+  <h1 class="title">🔍 π 百萬位數搜尋</h1>
+  <p class="description">輸入任意數字（例如你的生日、手機號碼）來查 π 的小數點後 100 萬位中是否出現：</p>
 
   <input
     type="tel"
@@ -28,16 +28,5 @@
   <pre id="resultArea"></pre>
 
   <script src="script.js"></script>
-  <script>
-    const resultArea = document.getElementById("resultArea");
-    const slider = document.getElementById("fontSizeSlider");
-    const sizeValue = document.getElementById("fontSizeValue");
-
-    slider.addEventListener("input", function () {
-      const fontSize = slider.value;
-      sizeValue.textContent = fontSize;
-      resultArea.style.fontSize = fontSize + "px";
-    });
-  </script>
 </body>
 </html>

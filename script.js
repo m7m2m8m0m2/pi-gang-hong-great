@@ -1,21 +1,23 @@
 let piDigits = "";
 
-// 載入 pi 資料（開頭包含 "3."）
 fetch("pi-1million.txt")
   .then((response) => response.text())
   .then((data) => {
-    piDigits = data.replace(/\s+/g, ""); // 去除空白與換行，但保留 "3."
+    piDigits = data.replace(/\s+/g, "");
     console.log("π 已載入，共 " + piDigits.length + " 位字元（含小數點）");
   });
 
 function searchInPi() {
-  const query = document.getElementById("searchInput").value.trim();
+  const input = document.getElementById("searchInput");
   const resultArea = document.getElementById("resultArea");
+  const query = input.value.trim();
 
   if (!query || !/^\d+$/.test(query)) {
     resultArea.textContent = "❌ 請輸入純數字，例如 0424 或 0917...";
     return;
   }
+
+  input.blur(); // 觸發失焦，手機收鍵盤
 
   const positions = [];
   let index = piDigits.indexOf(query);
@@ -50,20 +52,19 @@ function searchInPi() {
     displayList.join("\n");
 }
 
-// 支援按 Enter 鍵查詢
 document.addEventListener("DOMContentLoaded", function () {
   const input = document.getElementById("searchInput");
   const resultArea = document.getElementById("resultArea");
+  let firstFocus = true;
 
   input.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       searchInPi();
-      input.blur(); // 讓手機收鍵盤
     }
   });
 
   input.addEventListener("focus", function () {
-    input.value = "";          // 清空輸入
-    resultArea.textContent = ""; // 清空結果（可省略）
+    input.value = "";
+    resultArea.textContent = "";
   });
 });
