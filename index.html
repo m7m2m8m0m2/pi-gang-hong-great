@@ -29,11 +29,11 @@
 
   <pre id="resultArea"></pre>
 
-  <!-- Easter Egg Modal（預設隱藏） -->
-  <div id="videoModal" class="modal">
+  <!-- Easter Egg Modal（預設隱藏，使用 hidden 屬性） -->
+  <div id="videoModal" class="modal" hidden>
     <div class="modal-content">
       <span class="close">&times;</span>
-      <video id="popupVideo" controls>
+      <video id="popupVideo" controls preload="none">
         <source src="123.mp4" type="video/mp4">
         您的瀏覽器不支援影片播放。
       </video>
