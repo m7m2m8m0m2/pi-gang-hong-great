@@ -1,36 +1,116 @@
+/* 基本設定 */
 body {
-  font-family: "Noto Sans TC", sans-serif;
-  padding: 16px;
-  margin: auto;
-  background: #f5f5f5;
-  max-width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+  background-color: #f0f2f5;
+  color: #1c1e21;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 改為 flex-start 以免內容過多時被裁切 */
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* 主要容器 */
+.container {
+  width: 100%;
+  max-width: 680px;
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .title {
-  font-size: 20px;
-  margin-bottom: 4px;
-}
-
-.description {
-  font-size: 14px;
+  font-size: 28px;
   margin-bottom: 10px;
   color: #333;
 }
 
-input, button {
-  font-size: 18px;
-  padding: 10px;
-  width: 80%;
-  max-width: 400px;
-  margin-bottom: 10px;
+.description {
+  color: #606770;
+  margin-bottom: 25px;
+  font-size: 16px;
 }
 
-pre {
-  font-size: 18px;
-  background: white;
-  padding: 12px;
-  margin-top: 20px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+/* 搜尋區域 */
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  flex-grow: 1;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #dddfe2;
   border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none; /* 移除 iOS 上的預設樣式 */
+}
+
+#searchInput:focus {
+  border-color: #1877f2;
+  box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+}
+
+#searchButton {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #1877f2;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#searchButton:hover {
+  background-color: #166fe5;
+}
+
+/* 控制項 (字體拉桿) */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 15px;
+  color: #606770;
+  font-size: 14px;
+}
+
+#fontSizeSlider {
+  cursor: pointer;
+  max-width: 120px; /* 避免在手機上過長 */
+}
+
+#fontSizeValue {
+  min-width: 40px; /* 確保寬度一致，避免跳動 */
+  text-align: left;
+}
+
+/* 結果顯示區 */
+#resultArea {
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  min-height: 100px;
+  text-align: left;
+  white-space: pre-wrap; /* 讓 \n 換行符號生效 */
+  word-wrap: break-word;
+  font-size: 18px; /* 預設字體大小，會被 JS 控制 */
+  line-height: 1.6;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  transition: font-size 0.1s; /* 加入字體大小變動動畫 */
+}
+
+.loading-text {
+  color: #999;
 }
