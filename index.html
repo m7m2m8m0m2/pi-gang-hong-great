@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>π 百萬位數搜尋</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1 class="title">🔍 π 百萬位數搜尋</h1>
   <p class="description">
-    輸入任意數字（例如你的生日、手機號碼）來查 π 的小數點後 100 萬位中是否出現：
+    輸入任意數字（例如你的生日、手機號碼）來查 π 的小數點後 100 萬位（含整數）中是否出現：
   </p>
 
   <input
@@ -21,20 +21,20 @@
   />
   <button onclick="searchInPi()">搜尋</button>
 
-  <div style="margin-top:10px;">
+  <div class="slider-container">
     <label for="fontSizeSlider">字體大小：</label>
-    <input type="range" id="fontSizeSlider" min="14" max="28" value="18" />
+    <input type="range" id="fontSizeSlider" min="14" max="28" value="18">
     <span id="fontSizeValue">18</span> px
   </div>
 
   <pre id="resultArea"></pre>
 
-  <!-- 影片彈窗 -->
+  <!-- Easter Egg Modal -->
   <div id="videoModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <video id="popupVideo" controls>
-        <source src="123.mp4" type="video/mp4" />
+        <source src="123.mp4" type="video/mp4">
         您的瀏覽器不支援影片播放。
       </video>
     </div>
