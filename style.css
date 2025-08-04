@@ -38,6 +38,7 @@ pre {
 .modal[hidden] {
   display: none !important;
 }
+/* Modal 基本樣式 */
 .modal {
   position: fixed;
   z-index: 1000;
@@ -60,7 +61,9 @@ pre {
   color: #fff;
   cursor: pointer;
 }
-.modal-content video {
+/* 影片與圖片皆填滿 Modal-content */
+.modal-content video,
+.modal-content img {
   width: 100%;
   height: auto;
   border-radius: 4px;
