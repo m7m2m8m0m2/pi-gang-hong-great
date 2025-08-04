@@ -49,3 +49,10 @@ function searchInPi() {
     `✅「${query}」在 π（100 萬位數內）中共出現了 ${positions.length} 次：\n\n` +
     displayList.join("\n");
 }
+
+// 支援按 Enter 鍵查詢
+document.getElementById("searchInput").addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    searchInPi();
+  }
+});
