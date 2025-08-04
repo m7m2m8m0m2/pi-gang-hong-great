@@ -1,11 +1,11 @@
 let piDigits = "";
 
-// 載入 pi 資料（應包含 3. 開頭）
+// 載入不含小數點的 π 資料（首位為 3，其餘為 100 萬位小數）
 fetch("pi-1million.txt")
   .then((response) => response.text())
   .then((data) => {
     piDigits = data.replace(/\s+/g, "");
-    console.log("π 已載入，共 " + piDigits.length + " 位字元（含整數與小數點）");
+    console.log("π 已載入，共 " + piDigits.length + " 位數字（含整數）");
   });
 
 function searchInPi() {
@@ -18,17 +18,16 @@ function searchInPi() {
     return;
   }
 
-  input.blur(); // 手機輸入後自動收鍵盤
+  input.blur(); // 手機收鍵盤
 
   const positions = [];
 
-  // ✅ 正確處理「從整數開始」的判斷
-  const candidate = "3" + piDigits.slice(piDigits.indexOf(".") + 1, piDigits.indexOf(".") + 1 + query.length - 1);
-  if (candidate === query) {
-    positions.push(0); // index = 0 表示從整數開頭
+  // ✅ 正確處理：是否從整數 3 開始
+  if (piDigits.slice(0, query.length) === query) {
+    positions.push(0); // 表示從整數開頭出現
   }
 
-  // 🔍 從第 1 位（即小數點）後繼續找
+  // 🔍 從第 1 位（即小數第 1 位）開始繼續找
   let index = piDigits.indexOf(query, 1);
   while (index !== -1) {
     positions.push(index);
@@ -36,11 +35,11 @@ function searchInPi() {
   }
 
   if (positions.length === 0) {
-    resultArea.textContent = `❌「${query}」未出現在 π 的前 1,000,000 位中（含整數與小數點）。`;
+    resultArea.textContent = `❌「${query}」未出現在 π 的前 1,000,000 位中（含整數）。`;
     return;
   }
 
-  const decimalStart = piDigits.indexOf(".") + 1;
+  const decimalStart = 1; // 第 2 位是小數第 1 位
 
   const displayList = positions.map((pos, i) => {
     if (pos === 0) {
@@ -69,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   input.addEventListener("focus", function () {
-    input.value = "";             // ✅ 清空輸入內容
-    resultArea.textContent = "";  // ✅ 清空結果區
+    input.value = ""; // ✅ 只清空輸入，不清空結果
   });
 });
