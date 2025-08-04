@@ -7,25 +7,30 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1 class="title">🔍 π 百萬位數搜尋</h1>
-  <p class="description">輸入任意數字（例如你的生日、手機號碼）來查 π 的小數點後 100 萬位中是否出現：</p>
 
-  <input
-    type="tel"
-    id="searchInput"
-    inputmode="numeric"
-    pattern="[0-9]*"
-    placeholder="例如 0424"
-  />
-  <button onclick="searchInPi()">搜尋</button>
+  <div class="container">
+    <h1 class="title">🔍 π 百萬位數搜尋</h1>
+    <p class="description">輸入任意數字（例如你的生日、手機號碼）來查 π 的小數點後 100 萬位中是否出現：</p>
 
-  <div style="margin-top:10px;">
-    <label for="fontSizeSlider">字體大小：</label>
-    <input type="range" id="fontSizeSlider" min="14" max="28" value="18" />
-    <span id="fontSizeValue">18</span> px
+    <div class="search-box">
+      <input
+        type="tel"
+        id="searchInput"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        placeholder="例如 19910917"
+      />
+      <button id="searchButton">搜尋</button>
+    </div>
+
+    <div class="controls">
+      <label for="fontSizeSlider">結果字體大小：</label>
+      <input type="range" id="fontSizeSlider" min="12" max="28" value="18" />
+      <span id="fontSizeValue">18px</span>
+    </div>
+
+    <pre id="resultArea" class="loading-text">π 數據載入中，請稍候...</pre>
   </div>
-
-  <pre id="resultArea"></pre>
 
   <script src="script.js"></script>
 </body>
