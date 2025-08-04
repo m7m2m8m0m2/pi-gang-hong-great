@@ -5,7 +5,7 @@ fetch("pi-1million.txt")
   .then(response => response.text())
   .then(data => {
     piDigits = data.replace(/\s+/g, "");
-    console.log("π 已載入，共 " + piDigits.length + " 位數字（含整數）");
+    console.log("π 已載入，共 " + piDigits.length + " 位數字");
   });
 
 function searchInPi() {
@@ -18,16 +18,21 @@ function searchInPi() {
     return;
   }
 
-  input.blur(); // 手機按 GO 後自動收鍵盤
+  input.blur(); // 手機收鍵盤
+
+  // 如果是 314，彈出視窗並播影片
+  if (query === "314") {
+    showVideoModal();
+    return;
+  }
 
   const positions = [];
 
-  // 正確處理：是否從整數開頭
+  // 判斷是否從整數開頭
   if (piDigits.substring(0, query.length) === query) {
     positions.push(0);
   }
-
-  // 從第 2 位（小數第 1 位）開始搜尋剩餘
+  // 從小數第 1 位開始搜尋
   let idx = piDigits.indexOf(query, 1);
   while (idx !== -1) {
     positions.push(idx);
@@ -39,8 +44,7 @@ function searchInPi() {
     return;
   }
 
-  const decimalStart = 1; // 第 2 位是小數第 1 位
-
+  const decimalStart = 1;
   const displayList = positions.map((pos, i) => {
     if (pos === 0) {
       const decimalEnd = query.length - 1;
@@ -57,6 +61,29 @@ function searchInPi() {
     displayList.join("\n");
 }
 
+// 彈窗邏輯
+function showVideoModal() {
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("popupVideo");
+  const closeBtn = modal.querySelector(".close");
+
+  modal.style.display = "block";
+  video.currentTime = 0;
+  video.play();
+
+  closeBtn.onclick = () => {
+    video.pause();
+    modal.style.display = "none";
+  };
+  // 點到遮罩也關閉
+  modal.onclick = e => {
+    if (e.target === modal) {
+      video.pause();
+      modal.style.display = "none";
+    }
+  };
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("searchInput");
   const resultArea = document.getElementById("resultArea");
@@ -64,19 +91,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const sizeValue = document.getElementById("fontSizeValue");
 
   // Enter / GO 觸發搜尋
-  input.addEventListener("keydown", event => {
-    if (event.key === "Enter") searchInPi();
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") searchInPi();
   });
-
-  // 點擊輸入框只清空欄位，不清空結果
+  // 點擊輸入框只清空輸入
   input.addEventListener("focus", () => {
     input.value = "";
   });
-
   // 字體大小拉桿
   slider.addEventListener("input", () => {
-    const fontSize = slider.value;
-    sizeValue.textContent = fontSize;
-    resultArea.style.fontSize = fontSize + "px";
+    const fs = slider.value;
+    sizeValue.textContent = fs;
+    resultArea.style.fontSize = fs + "px";
   });
 });
