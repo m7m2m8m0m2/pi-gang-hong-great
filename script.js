@@ -51,8 +51,11 @@ function searchInPi() {
 }
 
 // 支援按 Enter 鍵查詢
-document.getElementById("searchInput").addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    searchInPi();
-  }
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("searchInput");
+  input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      searchInPi();
+    }
+  });
 });
