@@ -1,10 +1,11 @@
 let piDigits = "";
 
+// 載入 pi 資料（應包含 3. 開頭）
 fetch("pi-1million.txt")
   .then((response) => response.text())
   .then((data) => {
     piDigits = data.replace(/\s+/g, "");
-    console.log("π 已載入，共 " + piDigits.length + " 位字元（含小數點）");
+    console.log("π 已載入，共 " + piDigits.length + " 位字元（含整數與小數點）");
   });
 
 function searchInPi() {
@@ -17,11 +18,17 @@ function searchInPi() {
     return;
   }
 
-  input.blur(); // 觸發失焦，手機收鍵盤
+  input.blur(); // 讓手機收起鍵盤
 
   const positions = [];
-  let index = piDigits.indexOf(query);
 
+  // ✅ 檢查是否從整數 3 開頭就符合
+  if (piDigits.startsWith(query)) {
+    positions.push(0); // index 0 表示從整數開始
+  }
+
+  // 🔍 從第 1 位（即小數點）後繼續找
+  let index = piDigits.indexOf(query, 1);
   while (index !== -1) {
     positions.push(index);
     index = piDigits.indexOf(query, index + 1);
@@ -38,8 +45,6 @@ function searchInPi() {
     if (pos === 0) {
       const decimalEnd = query.length - 1;
       return `第 ${i + 1} 次出現在整數至小數點後第 ${decimalEnd} 位`;
-    } else if (pos < decimalStart) {
-      return `第 ${i + 1} 次出現在（含小數點）前的未知位置`;
     } else {
       const start = pos - decimalStart + 1;
       const end = start + query.length - 1;
@@ -52,10 +57,10 @@ function searchInPi() {
     displayList.join("\n");
 }
 
+// ✅ 網頁載入後才綁定事件
 document.addEventListener("DOMContentLoaded", function () {
   const input = document.getElementById("searchInput");
   const resultArea = document.getElementById("resultArea");
-  let firstFocus = true;
 
   input.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
