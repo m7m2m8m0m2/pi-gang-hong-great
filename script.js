@@ -20,14 +20,16 @@ function searchInPi() {
 
   input.blur(); // 手機自動收鍵盤
 
-  // 只有完全輸入 "314" 才彈出影片
+  // 彩蛋：314 播影片，0424 顯示圖片
   if (query === "314") {
-    showVideoModal();
-    return;
+    return showVideoModal();
+  }
+  if (query === "0424") {
+    return showImageModal();
   }
 
   const positions = [];
-  // 檢查是否從整數開頭
+  // 整數開頭檢查
   if (piDigits.substring(0, query.length) === query) {
     positions.push(0);
   }
@@ -65,7 +67,6 @@ function showVideoModal() {
   const video = document.getElementById("popupVideo");
   const closeBtn = modal.querySelector(".close");
 
-  // 解除 hidden，並開始播放
   modal.removeAttribute("hidden");
   video.currentTime = 0;
   video.play();
@@ -77,6 +78,23 @@ function showVideoModal() {
   modal.onclick = e => {
     if (e.target === modal) {
       video.pause();
+      modal.setAttribute("hidden", "");
+    }
+  };
+}
+
+function showImageModal() {
+  const modal = document.getElementById("imageModal");
+  const img = document.getElementById("popupImage");
+  const closeBtn = modal.querySelector(".close");
+
+  modal.removeAttribute("hidden");
+
+  closeBtn.onclick = () => {
+    modal.setAttribute("hidden", "");
+  };
+  modal.onclick = e => {
+    if (e.target === modal) {
       modal.setAttribute("hidden", "");
     }
   };
