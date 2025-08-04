@@ -1,113 +1,73 @@
-// script.js (v2 - 修正版)
+let piDigits = "";
 
-document.addEventListener("DOMContentLoaded", function() {
-  // --- 變數與 DOM 元素 ---
-  let piDigits = "";
-  const searchInput = document.getElementById("searchInput");
-  const searchButton = document.getElementById("searchButton");
+// 載入不含小數點的 π 資料（首位為 3，其餘為 100 萬位小數）
+fetch("pi-1million.txt")
+  .then((response) => response.text())
+  .then((data) => {
+    piDigits = data.replace(/\s+/g, "");
+    console.log("π 已載入，共 " + piDigits.length + " 位數字（含整數）");
+  });
+
+function searchInPi() {
+  const input = document.getElementById("searchInput");
   const resultArea = document.getElementById("resultArea");
-  const fontSizeSlider = document.getElementById("fontSizeSlider");
-  const fontSizeValue = document.getElementById("fontSizeValue");
+  const query = input.value.trim();
 
-  // --- 核心功能：在 π 中尋找數字 ---
-  // 將函式移至內部，確保它可以存取到上面的 DOM 元素
-  function searchInPi() {
-    const query = searchInput.value.trim();
-
-    if (!piDigits) {
-      resultArea.textContent = "⏳ π 數據仍在載入中，請稍後再試。";
-      return;
-    }
-
-    if (!query || !/^\d+$/.test(query)) {
-      resultArea.textContent = "❌ 請輸入純數字，例如 314159...";
-      resultArea.classList.remove('loading-text');
-      return;
-    }
-
-    searchInput.blur();
-
-    const positions = [];
-    let currentIndex = piDigits.indexOf(query, 0);
-
-    while (currentIndex !== -1) {
-      positions.push(currentIndex);
-      currentIndex = piDigits.indexOf(query, currentIndex + 1);
-    }
-
-    resultArea.classList.remove('loading-text');
-
-    if (positions.length === 0) {
-      resultArea.textContent = `❌ 「${query}」未出現在 π 的前 1,000,000 位小數中。`;
-      return;
-    }
-
-    const displayList = positions.map((pos, i) => {
-      if (pos === 0) {
-        const decimalEnd = query.length - 1;
-        if (decimalEnd === 0) {
-          return `${i + 1}. 出現在整數位。`;
-        }
-        return `${i + 1}. 出現在整數位到小數點後第 ${decimalEnd} 位。`;
-      } else {
-        const start = pos;
-        const end = pos + query.length - 1;
-        if (start === end) {
-          return `${i + 1}. 出現在小數點後第 ${start} 位。`;
-        }
-        return `${i + 1}. 出現在小數點後第 ${start}～${end} 位。`;
-      }
-    });
-
-    resultArea.textContent =
-      `✅ 「${query}」在 π 中共出現了 ${positions.length} 次：\n\n` +
-      displayList.join("\n");
+  if (!query || !/^\d+$/.test(query)) {
+    resultArea.textContent = "❌ 請輸入純數字，例如 0424 或 0917...";
+    return;
   }
 
-  // --- 事件監聽器設定 ---
+  input.blur(); // 手機收鍵盤
 
-  // 1. 載入 π 數據檔案
-  fetch("pi-1million.txt")
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('網路回應錯誤，無法載入 pi-1million.txt');
-      }
-      return response.text();
-    })
-    .then(data => {
-      piDigits = data.replace(/\s+/g, "");
-      resultArea.textContent = "π 數據已就緒，請開始輸入您想找的數字。";
-      resultArea.classList.remove('loading-text');
-      // 成功載入後，啟用按鈕和輸入框
-      searchInput.disabled = false;
-      searchButton.disabled = false;
-      console.log("π 已成功載入，互動功能已啟用。");
-    })
-    .catch(error => {
-      console.error("載入 π 數據失敗:", error);
-      resultArea.textContent = "❌ 錯誤：無法載入 pi-1million.txt 檔案。\n請確認該檔案與 index.html 在同一個資料夾內，然後重新整理頁面。";
-      resultArea.classList.remove('loading-text');
-    });
+  const positions = [];
 
-  // 2. 搜尋按鈕點擊事件
-  searchButton.addEventListener("click", searchInPi);
+  // ✅ 正確處理：是否從整數 3 開始
+  if (piDigits.slice(0, query.length) === query) {
+    positions.push(0); // 表示從整數開頭出現
+  }
 
-  // 3. 輸入框 Enter 鍵事件
-  searchInput.addEventListener("keydown", function(event) {
+  // 🔍 從第 1 位（即小數第 1 位）開始繼續找
+  let index = piDigits.indexOf(query, 1);
+  while (index !== -1) {
+    positions.push(index);
+    index = piDigits.indexOf(query, index + 1);
+  }
+
+  if (positions.length === 0) {
+    resultArea.textContent = `❌「${query}」未出現在 π 的前 1,000,000 位中（含整數）。`;
+    return;
+  }
+
+  const decimalStart = 1; // 第 2 位是小數第 1 位
+
+  const displayList = positions.map((pos, i) => {
+    if (pos === 0) {
+      const decimalEnd = query.length - 1;
+      return `第 ${i + 1} 次出現在整數至小數點後第 ${decimalEnd} 位`;
+    } else {
+      const start = pos - decimalStart + 1;
+      const end = start + query.length - 1;
+      return `第 ${i + 1} 次出現在小數點後第 ${start}～${end} 位`;
+    }
+  });
+
+  resultArea.textContent =
+    `✅「${query}」在 π（100 萬位數內）中共出現了 ${positions.length} 次：\n\n` +
+    displayList.join("\n");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("searchInput");
+  const resultArea = document.getElementById("resultArea");
+
+  input.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-      event.preventDefault();
       searchInPi();
     }
   });
 
-  // 4. 字體大小拉桿的事件監聽
-  fontSizeSlider.addEventListener("input", function() {
-    const newSize = this.value;
-    resultArea.style.fontSize = newSize + "px";
-    fontSizeValue.textContent = newSize + "px";
+  input.addEventListener("focus", function () {
+    input.value = ""; // ✅ 只清空輸入，不清空結果
   });
-
-  // 頁面載入時，先禁用輸入，直到 π 數據載入完成
-  searchInput.disabled = true;
-  searchButton.disabled = true;
 });
