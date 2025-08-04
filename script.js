@@ -20,10 +20,9 @@ function searchInPi() {
 
   input.blur(); // 手機自動收鍵盤
 
-  // Easter egg: 只在輸入 "314" 時彈出影片
+  // Easter egg: 只有完全輸入「314」才彈窗播放
   if (query === "314") {
-    showVideoModal();
-    return;
+    return showVideoModal();
   }
 
   const positions = [];
@@ -31,7 +30,7 @@ function searchInPi() {
   if (piDigits.substring(0, query.length) === query) {
     positions.push(0);
   }
-  // 從第 2 位（小數第 1 位）開始搜尋其餘出現
+  // 從第 2 位（小數第 1 位）開始搜尋
   let idx = piDigits.indexOf(query, 1);
   while (idx !== -1) {
     positions.push(idx);
@@ -43,7 +42,7 @@ function searchInPi() {
     return;
   }
 
-  const decimalStart = 1; // 第 2 位是小數第 1 位
+  const decimalStart = 1;
   const displayList = positions.map((pos, i) => {
     if (pos === 0) {
       const decimalEnd = query.length - 1;
