@@ -18,21 +18,20 @@ function searchInPi() {
     return;
   }
 
-  input.blur(); // 手機收鍵盤
+  input.blur(); // 手機自動收鍵盤
 
-  // 如果是 314，彈出視窗並播影片
+  // Easter egg: 只在輸入 "314" 時彈出影片
   if (query === "314") {
     showVideoModal();
     return;
   }
 
   const positions = [];
-
-  // 判斷是否從整數開頭
+  // 檢查是否從整數開頭
   if (piDigits.substring(0, query.length) === query) {
     positions.push(0);
   }
-  // 從小數第 1 位開始搜尋
+  // 從第 2 位（小數第 1 位）開始搜尋其餘出現
   let idx = piDigits.indexOf(query, 1);
   while (idx !== -1) {
     positions.push(idx);
@@ -44,7 +43,7 @@ function searchInPi() {
     return;
   }
 
-  const decimalStart = 1;
+  const decimalStart = 1; // 第 2 位是小數第 1 位
   const displayList = positions.map((pos, i) => {
     if (pos === 0) {
       const decimalEnd = query.length - 1;
@@ -61,7 +60,6 @@ function searchInPi() {
     displayList.join("\n");
 }
 
-// 彈窗邏輯
 function showVideoModal() {
   const modal = document.getElementById("videoModal");
   const video = document.getElementById("popupVideo");
@@ -75,7 +73,6 @@ function showVideoModal() {
     video.pause();
     modal.style.display = "none";
   };
-  // 點到遮罩也關閉
   modal.onclick = e => {
     if (e.target === modal) {
       video.pause();
@@ -94,10 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
   input.addEventListener("keydown", e => {
     if (e.key === "Enter") searchInPi();
   });
-  // 點擊輸入框只清空輸入
+
+  // 點擊輸入框只清空輸入，不影響結果
   input.addEventListener("focus", () => {
     input.value = "";
   });
+
   // 字體大小拉桿
   slider.addEventListener("input", () => {
     const fs = slider.value;
