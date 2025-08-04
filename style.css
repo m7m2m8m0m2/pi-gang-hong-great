@@ -25,6 +25,10 @@ input, button {
   margin-bottom: 10px;
 }
 
+.slider-container {
+  margin-bottom: 10px;
+}
+
 pre {
   font-size: 18px;
   background: white;

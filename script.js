@@ -18,16 +18,16 @@ function searchInPi() {
     return;
   }
 
-  input.blur(); // 手機收鍵盤
+  input.blur(); // 手機按 GO 後自動收鍵盤
 
   const positions = [];
 
-  // ✅ 正確處理：是否從整數 3 開始
+  // 正確處理：是否從整數開頭
   if (piDigits.substring(0, query.length) === query) {
     positions.push(0);
   }
 
-  // 🔍 從第 2 位（小數第 1 位）開始搜尋剩餘
+  // 從第 2 位（小數第 1 位）開始搜尋剩餘
   let idx = piDigits.indexOf(query, 1);
   while (idx !== -1) {
     positions.push(idx);
@@ -44,11 +44,11 @@ function searchInPi() {
   const displayList = positions.map((pos, i) => {
     if (pos === 0) {
       const decimalEnd = query.length - 1;
-      return `第 ${i + 1} 次出現在整數至小數點後第 ${decimalEnd} 位`;
+      return `第 ${i+1} 次出現在整數至小數點後第 ${decimalEnd} 位`;
     } else {
       const start = pos - decimalStart + 1;
       const end = start + query.length - 1;
-      return `第 ${i + 1} 次出現在小數點後第 ${start}～${end} 位`;
+      return `第 ${i+1} 次出現在小數點後第 ${start}～${end} 位`;
     }
   });
 
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     input.value = "";
   });
 
-  // 字體大小拉桿：同步更新顯示文字與結果區字體
+  // 字體大小拉桿
   slider.addEventListener("input", () => {
     const fontSize = slider.value;
     sizeValue.textContent = fontSize;
