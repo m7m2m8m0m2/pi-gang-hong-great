@@ -2,8 +2,8 @@ let piDigits = "";
 
 // 載入不含小數點的 π 資料（首位為 3，其餘為 100 萬位小數）
 fetch("pi-1million.txt")
-  .then((response) => response.text())
-  .then((data) => {
+  .then(response => response.text())
+  .then(data => {
     piDigits = data.replace(/\s+/g, "");
     console.log("π 已載入，共 " + piDigits.length + " 位數字（含整數）");
   });
@@ -23,19 +23,19 @@ function searchInPi() {
   const positions = [];
 
   // ✅ 正確處理：是否從整數 3 開始
-  if (piDigits.slice(0, query.length) === query) {
-    positions.push(0); // 表示從整數開頭出現
+  if (piDigits.substring(0, query.length) === query) {
+    positions.push(0);
   }
 
-  // 🔍 從第 1 位（即小數第 1 位）開始繼續找
-  let index = piDigits.indexOf(query, 1);
-  while (index !== -1) {
-    positions.push(index);
-    index = piDigits.indexOf(query, index + 1);
+  // 🔍 從第 2 位（小數第 1 位）開始搜尋剩餘
+  let idx = piDigits.indexOf(query, 1);
+  while (idx !== -1) {
+    positions.push(idx);
+    idx = piDigits.indexOf(query, idx + 1);
   }
 
   if (positions.length === 0) {
-    resultArea.textContent = `❌「${query}」未出現在 π 的前 1,000,000 位中（含整數）。`;
+    resultArea.textContent = `❌「${query}」未出現在 π（100 萬位內）`;
     return;
   }
 
@@ -57,17 +57,26 @@ function searchInPi() {
     displayList.join("\n");
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("searchInput");
   const resultArea = document.getElementById("resultArea");
+  const slider = document.getElementById("fontSizeSlider");
+  const sizeValue = document.getElementById("fontSizeValue");
 
-  input.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      searchInPi();
-    }
+  // Enter / GO 觸發搜尋
+  input.addEventListener("keydown", event => {
+    if (event.key === "Enter") searchInPi();
   });
 
-  input.addEventListener("focus", function () {
-    input.value = ""; // ✅ 只清空輸入，不清空結果
+  // 點擊輸入框只清空欄位，不清空結果
+  input.addEventListener("focus", () => {
+    input.value = "";
+  });
+
+  // 字體大小拉桿：同步更新顯示文字與結果區字體
+  slider.addEventListener("input", () => {
+    const fontSize = slider.value;
+    sizeValue.textContent = fontSize;
+    resultArea.style.fontSize = fontSize + "px";
   });
 });
