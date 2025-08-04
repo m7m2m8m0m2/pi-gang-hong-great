@@ -53,9 +53,17 @@ function searchInPi() {
 // 支援按 Enter 鍵查詢
 document.addEventListener("DOMContentLoaded", function () {
   const input = document.getElementById("searchInput");
+  const resultArea = document.getElementById("resultArea");
+
   input.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       searchInPi();
+      input.blur(); // 讓手機收鍵盤
     }
+  });
+
+  input.addEventListener("focus", function () {
+    input.value = "";          // 清空輸入
+    resultArea.textContent = ""; // 清空結果（可省略）
   });
 });
