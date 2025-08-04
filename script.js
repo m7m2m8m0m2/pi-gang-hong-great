@@ -18,13 +18,14 @@ function searchInPi() {
     return;
   }
 
-  input.blur(); // 讓手機收起鍵盤
+  input.blur(); // 手機輸入後自動收鍵盤
 
   const positions = [];
 
-  // ✅ 檢查是否從整數 3 開頭就符合
-  if (piDigits.startsWith(query)) {
-    positions.push(0); // index 0 表示從整數開始
+  // ✅ 正確處理「從整數開始」的判斷
+  const candidate = "3" + piDigits.slice(piDigits.indexOf(".") + 1, piDigits.indexOf(".") + 1 + query.length - 1);
+  if (candidate === query) {
+    positions.push(0); // index = 0 表示從整數開頭
   }
 
   // 🔍 從第 1 位（即小數點）後繼續找
@@ -57,7 +58,6 @@ function searchInPi() {
     displayList.join("\n");
 }
 
-// ✅ 網頁載入後才綁定事件
 document.addEventListener("DOMContentLoaded", function () {
   const input = document.getElementById("searchInput");
   const resultArea = document.getElementById("resultArea");
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   input.addEventListener("focus", function () {
-    input.value = "";
-    resultArea.textContent = "";
+    input.value = "";             // ✅ 清空輸入內容
+    resultArea.textContent = "";  // ✅ 清空結果區
   });
 });
